@@ -7,9 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.api_controle_acesso.DTOs.UsuarioPostDTO;
 import com.api_controle_acesso.DTOs.UsuarioReturnDTO;
+import com.api_controle_acesso.exceptions.ValidacaoException;
 import com.api_controle_acesso.models.Usuario;
 import com.api_controle_acesso.repositories.UsuarioRepository;
-import com.api_controle_acesso.repositories.ValidacaoException;
 
 @Service
 public class UsuarioService {
