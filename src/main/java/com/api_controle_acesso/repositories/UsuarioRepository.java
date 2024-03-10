@@ -14,4 +14,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
             where u.cpf = :cpf
             """)
     Optional<Boolean> verificarCpfExistente(String cpf);
+
+    Usuario findByMatricula(String matricula);
 }
