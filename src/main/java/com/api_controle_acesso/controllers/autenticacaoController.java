@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.api_controle_acesso.DTOs.LoginDTO;
-import com.api_controle_acesso.DTOs.TokenDTO;
+
+import com.api_controle_acesso.DTOs.AuthDTO.LoginDTO;
+import com.api_controle_acesso.DTOs.AuthDTO.TokenDTO;
 import com.api_controle_acesso.models.Usuario;
 import com.api_controle_acesso.services.JWTService;
 import jakarta.validation.Valid;
@@ -25,6 +26,7 @@ public class autenticacaoController {
 
     @PostMapping
     public ResponseEntity<Object> login(@RequestBody @Valid LoginDTO loginDto) {
+        
         var authToken = new UsernamePasswordAuthenticationToken(loginDto.matricula(), loginDto.senha());
         var authentication = authenticationManager.authenticate(authToken);
         var jwtToken = jwtService.gerarToken((Usuario) authentication.getPrincipal());
