@@ -5,13 +5,17 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.api_controle_acesso.DTOs.UsuarioPostDTO;
+
+import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPostDTO;
+import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPutDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -102,5 +106,14 @@ public class Usuario implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void update(@Valid UsuarioPutDTO usuarioPutDTO) {
+        if (usuarioPutDTO.email() != null)
+            this.email = usuarioPutDTO.email();
+        
+        if (usuarioPutDTO.foto() != null)
+            this.foto = usuarioPutDTO.foto();
+
     }
 }
