@@ -5,8 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.api_controle_acesso.DTOs.UsuarioPostDTO;
-import com.api_controle_acesso.DTOs.UsuarioReturnDTO;
+
+import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPostDTO;
+import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioReturnDTO;
 import com.api_controle_acesso.exceptions.ValidacaoException;
 import com.api_controle_acesso.models.Usuario;
 import com.api_controle_acesso.repositories.UsuarioRepository;
@@ -32,5 +33,14 @@ public class UsuarioService {
 
     public Usuario visualizarUsuario(UUID id) {
         return usuarioRepository.getReferenceById(id);
+    }
+
+    public void deleteUsuario(UUID id) {
+        var usuario = usuarioRepository.getReferenceById(id);
+        try {
+            usuarioRepository.delete(usuario);      
+        } catch (Exception e) {
+            throw new RuntimeException("Não foi Possível deletar esse Usuário!");
+        }
     }
 }
