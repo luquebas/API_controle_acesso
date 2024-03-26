@@ -2,10 +2,10 @@ package com.api_controle_acesso.services;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import com.api_controle_acesso.models.Usuario;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -13,7 +13,10 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
 @Service
-public class JWTService {
+public class 
+JWTService {
+
+    Logger logger = LoggerFactory.getLogger(JWTService.class);
     
     @Value("${api.security.token.secret}")
     private String secret;
@@ -39,8 +42,26 @@ public class JWTService {
             .build()
             .verify(JWToken)
             .getSubject();
+            
         } catch (JWTVerificationException e) {
             throw new RuntimeException("Token Inválido ou Expirado, faça Login Novamente!");
+        }
+    }
+
+    public boolean tokenValido(String JWToken) {
+        String token = JWToken.replace("Bearer ", "");
+        try {
+            var algorithm = Algorithm.HMAC256(secret);
+            JWT.require(algorithm)
+            .withIssuer("API Controle Acesso")
+            .build()
+            .verify(token)
+            .getSubject();
+
+            return true;
+            
+        } catch (JWTVerificationException e) {
+            throw new JWTVerificationException("Token Inválido ou Expirado, faça Login Novamente!");
         }
     }
 
