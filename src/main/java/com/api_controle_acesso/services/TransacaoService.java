@@ -29,7 +29,16 @@ public class TransacaoService {
     }
 
     public Transacao visualizarTransacao(UUID id) {
+        
         return transacaoRepository.getReferenceById(id);
     }
-    
+
+    public void excluirTransacao(UUID id) {
+        var transacao = transacaoRepository.getReferenceById(id);
+        try {
+            transacaoRepository.delete(transacao);
+        } catch (Exception e) {
+            throw new RuntimeException("Não foi Possível deletar essa transação");
+        }
+    }
 }

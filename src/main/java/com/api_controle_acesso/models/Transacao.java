@@ -55,9 +55,5 @@ public class Transacao {
     @Column(name = "dia_da_semana")
     @Enumerated(EnumType.STRING)
     private DiaSemana diaSemana;
-
-
-    //$2a$12$jHnv1zg7e3LBZPvK05n3cOgOBza2IdmIpIknJgf6UqYSKCIZVb0yi  id 273c0f38-4c1a-4dcf-a789-12116cd5322f   
-    
     
 }

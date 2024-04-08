@@ -132,6 +132,5 @@ public class Usuario implements UserDetails {
         
         if (usuarioPutDTO.foto() != null)
             this.foto = usuarioPutDTO.foto();
-
     }
 }

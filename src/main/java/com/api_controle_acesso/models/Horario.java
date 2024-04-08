@@ -1,6 +1,8 @@
 package com.api_controle_acesso.models;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import com.api_controle_acesso.DTOs.HorarioDTO.HorarioPostDTO;
 import com.api_controle_acesso.models.enums.DiaSemana;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,6 +28,13 @@ import lombok.Setter;
 @Table(name = "horario")
 public class Horario {
     
+    public Horario(HorarioPostDTO horarioPostDTO) {
+        this.diaSemana = horarioPostDTO.diaSemana();
+        this.horario_entrada = horarioPostDTO.horario_entrada();
+        this.horario_saida = horarioPostDTO.horario_saida();
+        this.curso = horarioPostDTO.curso();
+    }
+
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
