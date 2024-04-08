@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPostDTO;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioReturnDTO;
 import com.api_controle_acesso.exceptions.ValidacaoException;
-import com.api_controle_acesso.models.Role;
 import com.api_controle_acesso.models.Usuario;
+import com.api_controle_acesso.models.enums.Role;
 import com.api_controle_acesso.repositories.UsuarioRepository;
 
 @Service

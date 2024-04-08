@@ -23,7 +23,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPostDTO;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPutDTO;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioReturnDTO;
-import com.api_controle_acesso.models.Role;
+import com.api_controle_acesso.models.enums.Role;
 import com.api_controle_acesso.services.UsuarioService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;

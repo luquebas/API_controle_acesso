@@ -1,4 +1,4 @@
-package com.api_controle_acesso.models;
+package com.api_controle_acesso.models.enums;
 
 public enum Role {
     ROLE_USER,

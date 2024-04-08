@@ -7,17 +7,22 @@ import java.util.UUID;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPostDTO;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPutDTO;
+import com.api_controle_acesso.models.enums.Role;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -59,8 +64,9 @@ public class Usuario implements UserDetails {
     @Column(name = "matricula")
     private String matricula;
 
-    @Column(name = "curso")
-    private String curso;
+    @JoinColumn(name = "curso_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Curso curso;
 
     @Column(name = "cpf")
     private String cpf;
@@ -76,6 +82,9 @@ public class Usuario implements UserDetails {
 
     @Column(name = "nivel")
     private String nivel;
+
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Transacao> transacoes;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
