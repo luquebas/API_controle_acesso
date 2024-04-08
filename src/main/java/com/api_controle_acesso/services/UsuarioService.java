@@ -32,7 +32,7 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public Page<UsuarioReturnDTO> visualizarUsuarios( Pageable pageable) {
+    public Page<UsuarioReturnDTO> visualizarUsuarios(Pageable pageable) {
         var page = usuarioRepository.findAll(pageable).map(UsuarioReturnDTO::new);
         return page;
     }

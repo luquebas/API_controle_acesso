@@ -1,6 +1,8 @@
 package com.api_controle_acesso.models;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import com.api_controle_acesso.DTOs.TransacaoDTO.TransacaoPostDTO;
 import com.api_controle_acesso.models.enums.DiaSemana;
 import com.api_controle_acesso.models.enums.TipoTransacao;
 import jakarta.persistence.Column;
@@ -28,6 +30,13 @@ import lombok.Setter;
 @Entity
 @Table(name = "Transacao")
 public class Transacao {
+
+    public Transacao(TransacaoPostDTO transacaoPostDTO) {
+        this.usuario = transacaoPostDTO.usuario();
+        this.tipoTransacao = transacaoPostDTO.tipoTransacao();
+        this.hora = transacaoPostDTO.hora();
+        this.diaSemana = transacaoPostDTO.diaSemana();
+    }
 
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

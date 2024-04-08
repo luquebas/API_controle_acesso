@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPostDTO;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPutDTO;
 import com.api_controle_acesso.models.enums.Role;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
