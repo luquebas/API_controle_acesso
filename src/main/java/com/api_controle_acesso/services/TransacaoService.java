@@ -1,6 +1,5 @@
 package com.api_controle_acesso.services;
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,9 +15,15 @@ public class TransacaoService {
     @Autowired
     private TransacaoRepository transacaoRepository;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     public Transacao criarTransacao(TransacaoPostDTO transacaoPostDTO) {
 
+        var usuario = usuarioService.visualizarUsuario(transacaoPostDTO.usuario().getId());
+        
         var transacao = new Transacao(transacaoPostDTO);
+        transacao.setUsuario(usuario);
 
         return transacaoRepository.save(transacao);
     }

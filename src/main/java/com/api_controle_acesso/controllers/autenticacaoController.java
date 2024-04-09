@@ -1,4 +1,5 @@
 package com.api_controle_acesso.controllers;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,7 +33,7 @@ public class autenticacaoController {
 
     @PostMapping
     public ResponseEntity<Object> login(@RequestBody @Valid LoginDTO loginDto) {
-        
+
         var authToken = new UsernamePasswordAuthenticationToken(loginDto.matricula(), loginDto.senha());
         var usuario = usuarioService.findUsuarioByMatricula(loginDto.matricula());
 

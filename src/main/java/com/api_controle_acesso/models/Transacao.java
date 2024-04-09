@@ -32,7 +32,6 @@ import lombok.Setter;
 public class Transacao {
 
     public Transacao(TransacaoPostDTO transacaoPostDTO) {
-        this.usuario = transacaoPostDTO.usuario();
         this.tipoTransacao = transacaoPostDTO.tipoTransacao();
         this.hora = transacaoPostDTO.hora();
         this.diaSemana = transacaoPostDTO.diaSemana();

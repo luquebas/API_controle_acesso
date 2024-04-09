@@ -30,7 +30,9 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    
         var tokenJWT = recuperarToken(request);
+    
         if (tokenJWT != null) {
             var subject = jwtService.validarToken(tokenJWT);
             var usuario = usuarioRepository.findByMatricula(subject);

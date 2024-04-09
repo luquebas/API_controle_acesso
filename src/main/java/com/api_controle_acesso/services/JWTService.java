@@ -37,6 +37,7 @@ JWTService {
     public String validarToken(String JWToken) {
         try {
             var algorithm = Algorithm.HMAC256(secret);
+            logger.info("Teste: " + JWToken);
             return JWT.require(algorithm)
             .withIssuer("API Controle Acesso")
             .build()
