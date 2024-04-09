@@ -1,6 +1,8 @@
 package com.api_controle_acesso.models;
 import java.util.List;
 import java.util.UUID;
+import com.api_controle_acesso.DTOs.CursoDTO.CursoPostDTO;
+import com.api_controle_acesso.DTOs.CursoDTO.CursoPutDTO;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +26,11 @@ import lombok.Setter;
 @Setter
 public class Curso {
     
+    public Curso(CursoPostDTO cursoPostDTO) {
+        this.nome = cursoPostDTO.nome();
+        this.duracao = cursoPostDTO.duracao();
+    }
+
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
@@ -37,4 +45,12 @@ public class Curso {
 
     @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Horario> horarios;
+
+        public void update(@Valid CursoPutDTO cursoPutDTO) {
+        if (cursoPutDTO.nome() != null)
+            this.nome = cursoPutDTO.nome();
+        
+        if (cursoPutDTO.duracao() != null)
+            this.duracao = cursoPutDTO.duracao();
+    }
 }

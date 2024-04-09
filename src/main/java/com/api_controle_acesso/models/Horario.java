@@ -3,6 +3,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.api_controle_acesso.DTOs.HorarioDTO.HorarioPostDTO;
+import com.api_controle_acesso.DTOs.HorarioDTO.HorarioPutDTO;
 import com.api_controle_acesso.models.enums.DiaSemana;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,5 +54,20 @@ public class Horario {
     @ManyToOne(fetch = FetchType.LAZY)
     private Curso curso;
 
-    
+        public void update(@Valid HorarioPutDTO horarioPutDTO) {
+        if (horarioPutDTO.diaSemana() != null)
+            this.diaSemana = horarioPutDTO.diaSemana();
+        
+        if (horarioPutDTO.horario_entrada() != null)
+            this.horario_entrada = horarioPutDTO.horario_entrada();
+
+        if (horarioPutDTO.horario_saida() != null) {
+            this.horario_saida = horarioPutDTO.horario_saida();
+        }
+
+        if (horarioPutDTO.curso() != null) {
+            this.curso = horarioPutDTO.curso();
+        }
+    }
+ 
 }

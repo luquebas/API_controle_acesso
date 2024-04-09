@@ -1,5 +1,7 @@
 package com.api_controle_acesso.services;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,5 +27,18 @@ public class HorarioService {
     public Page<HorarioReturnDTO> visualizarHorarios(Pageable pageable) {
         var page = horarioRepository.findAll(pageable).map(HorarioReturnDTO::new);
         return page;
+    }
+
+    public Horario visualizarHorario(UUID id) {
+        return horarioRepository.getReferenceById(id);
+    }
+
+    public void deleteHorario(UUID id) {
+        var horario = horarioRepository.getReferenceById(id);
+        try {
+            horarioRepository.delete(horario);
+        } catch (Exception e) {
+            throw new RuntimeException("Não foi Possível deletar o Horário");
+        }
     }
 }

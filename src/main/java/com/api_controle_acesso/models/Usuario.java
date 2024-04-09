@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPostDTO;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPutDTO;
 import com.api_controle_acesso.models.enums.Role;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -21,7 +20,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -81,9 +79,6 @@ public class Usuario implements UserDetails {
 
     @Column(name = "nivel")
     private String nivel;
-
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Transacao> transacoes;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
