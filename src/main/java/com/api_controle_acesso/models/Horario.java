@@ -69,6 +69,10 @@ public class Horario {
         if (horarioPutDTO.horario_saida() != null) {
             this.horario_saida = horarioPutDTO.horario_saida();
         }
+
+        if (horarioPutDTO.curso() != null) {
+            this.curso = horarioPutDTO.curso();
+        }
     }
  
 }
