@@ -3,6 +3,9 @@ import java.util.List;
 import java.util.UUID;
 import com.api_controle_acesso.DTOs.CursoDTO.CursoPostDTO;
 import com.api_controle_acesso.DTOs.CursoDTO.CursoPutDTO;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,10 +21,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+@Entity(name = "Curso")
 @Table(name = "curso")
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Getter
 @Setter
 public class Curso {
@@ -41,9 +45,11 @@ public class Curso {
     private Integer duracao;
 
     @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Usuario> usuarios;
 
     @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Horario> horarios;
 
         public void update(@Valid CursoPutDTO cursoPutDTO) {

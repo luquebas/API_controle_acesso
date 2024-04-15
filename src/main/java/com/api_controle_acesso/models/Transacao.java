@@ -5,6 +5,8 @@ import java.util.UUID;
 import com.api_controle_acesso.DTOs.TransacaoDTO.TransacaoPostDTO;
 import com.api_controle_acesso.models.enums.DiaSemana;
 import com.api_controle_acesso.models.enums.TipoTransacao;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -27,6 +29,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "Transacao")
 public class Transacao {
@@ -42,6 +45,7 @@ public class Transacao {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")
+    @JsonBackReference
     private Usuario usuario;
 
     @Column(name = "tipo_transacao")

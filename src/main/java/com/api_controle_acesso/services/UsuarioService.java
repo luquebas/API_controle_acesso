@@ -16,7 +16,10 @@ import com.api_controle_acesso.repositories.UsuarioRepository;
 public class UsuarioService {
     
     @Autowired
-    UsuarioRepository usuarioRepository;
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private CursoService cursoService;
 
     @Autowired
     private PasswordEncoder passwordEncoder; 
@@ -26,6 +29,9 @@ public class UsuarioService {
             throw new ValidacaoException("CPF já existente");
         
         var usuario = new Usuario(dadosUsuario);
+
+        var curso = cursoService.visualizarCurso(dadosUsuario.curso().getId());
+        usuario.setCurso(curso);
         usuario.setRole(Role.ROLE_USER);
         usuario.setSenha(passwordEncoder.encode((dadosUsuario.senha())));
 

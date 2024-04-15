@@ -15,12 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import com.api_controle_acesso.DTOs.CursoDTO.CursoPostDTO;
 import com.api_controle_acesso.DTOs.CursoDTO.CursoPutDTO;
-import com.api_controle_acesso.DTOs.CursoDTO.CursoReturnDTO;
+import com.api_controle_acesso.DTOs.CursoDTO.CursoReturnGetDTO;
 import com.api_controle_acesso.services.CursoService;
-
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -38,12 +36,12 @@ public class CursoController {
         var curso = cursoService.criarCurso(cursoPostDTO);
         var uri = uriComponentsBuilder.path("curso/{id}").buildAndExpand(curso.getId()).toUri();
 
-        return ResponseEntity.created(uri).body(new CursoReturnDTO(curso));
+        return ResponseEntity.created(uri).body(new CursoReturnGetDTO(curso));
     }
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<Page<CursoReturnDTO>> visualizarCursos(@PageableDefault(size = 10, sort = {"nome"}) Pageable pageable) {
+    public ResponseEntity<Page<CursoReturnGetDTO>> visualizarCursos(@PageableDefault(size = 10, sort = {"nome"}) Pageable pageable) {
         return ResponseEntity.ok().body(cursoService.visualizarCursos(pageable));
     }
 
@@ -52,7 +50,7 @@ public class CursoController {
     public ResponseEntity<Object> visualizarCurso(@PathVariable UUID id) {
         
         var curso = cursoService.visualizarCurso(id);
-        return ResponseEntity.ok().body(new CursoReturnDTO(curso));
+        return ResponseEntity.ok().body(new CursoReturnGetDTO(curso));
     }
 
     @PutMapping
@@ -62,7 +60,7 @@ public class CursoController {
         var curso = cursoService.visualizarCurso(cursoPutDTO.id());
         curso.update(cursoPutDTO);
 
-        return ResponseEntity.ok().body(new CursoReturnDTO(curso));
+        return ResponseEntity.ok().body(new CursoReturnGetDTO(curso));
     }
 
     @DeleteMapping("/{id}")

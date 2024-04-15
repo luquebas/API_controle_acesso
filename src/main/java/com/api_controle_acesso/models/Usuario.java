@@ -10,6 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPostDTO;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPutDTO;
 import com.api_controle_acesso.models.enums.Role;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -32,6 +35,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @EqualsAndHashCode(of = "id")
 @Entity
 @Table(name = "Usuario")
@@ -63,6 +67,7 @@ public class Usuario implements UserDetails {
 
     @JoinColumn(name = "curso_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private Curso curso;
 
     @Column(name = "cpf")
@@ -127,5 +132,6 @@ public class Usuario implements UserDetails {
         
         if (usuarioPutDTO.foto() != null)
             this.foto = usuarioPutDTO.foto();
+    
     }
 }

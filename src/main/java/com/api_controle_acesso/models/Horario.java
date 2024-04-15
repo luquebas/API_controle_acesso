@@ -1,10 +1,13 @@
 package com.api_controle_acesso.models;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 import com.api_controle_acesso.DTOs.HorarioDTO.HorarioPostDTO;
 import com.api_controle_acesso.DTOs.HorarioDTO.HorarioPutDTO;
 import com.api_controle_acesso.models.enums.DiaSemana;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -26,6 +29,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "horario")
 public class Horario {
@@ -45,13 +49,14 @@ public class Horario {
     private DiaSemana diaSemana;
 
     @Column(name = "horario_entrada")
-    private LocalDateTime horario_entrada;
+    private LocalTime horario_entrada;
 
     @Column(name = "horario_saida")
-    private LocalDateTime horario_saida;
+    private LocalTime horario_saida;
 
     @JoinColumn(name = "curso_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private Curso curso;
 
         public void update(@Valid HorarioPutDTO horarioPutDTO) {
@@ -63,10 +68,6 @@ public class Horario {
 
         if (horarioPutDTO.horario_saida() != null) {
             this.horario_saida = horarioPutDTO.horario_saida();
-        }
-
-        if (horarioPutDTO.curso() != null) {
-            this.curso = horarioPutDTO.curso();
         }
     }
  

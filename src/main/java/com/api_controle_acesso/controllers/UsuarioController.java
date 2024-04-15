@@ -22,6 +22,7 @@ import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPostDTO;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPutDTO;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioReturnDTO;
 import com.api_controle_acesso.models.enums.Role;
+import com.api_controle_acesso.services.CursoService;
 import com.api_controle_acesso.services.UsuarioService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -31,7 +32,10 @@ import jakarta.validation.Valid;
 public class UsuarioController {
 
     @Autowired
-    UsuarioService usuarioService;
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private CursoService cursoService;
 
     Logger logger = LoggerFactory.getLogger(UsuarioController.class);
     
@@ -65,6 +69,12 @@ public class UsuarioController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<Object> updateUsuario(@Valid @RequestBody UsuarioPutDTO usuarioPutDTO) {
         var usuario = usuarioService.visualizarUsuario(usuarioPutDTO.id());
+        
+        if (usuarioPutDTO.curso_id() != null) {
+            var curso = cursoService.visualizarCurso(usuarioPutDTO.curso_id());
+            usuario.setCurso(curso);
+        }
+        
         usuario.update(usuarioPutDTO);
 
         return ResponseEntity.ok().body(new UsuarioReturnDTO(usuario));
