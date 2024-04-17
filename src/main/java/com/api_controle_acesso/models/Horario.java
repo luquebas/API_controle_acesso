@@ -1,6 +1,5 @@
 package com.api_controle_acesso.models;
 import java.time.LocalTime;
-import java.util.UUID;
 
 import com.api_controle_acesso.DTOs.HorarioDTO.HorarioPostDTO;
 import com.api_controle_acesso.DTOs.HorarioDTO.HorarioPutDTO;
@@ -41,8 +40,8 @@ public class Horario {
         this.curso = horarioPostDTO.curso();
     }
 
-    @Id @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @Column(name = "dia_da_semana")
     @Enumerated(EnumType.STRING)

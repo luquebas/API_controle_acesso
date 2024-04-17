@@ -1,5 +1,4 @@
 package com.api_controle_acesso.services;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,11 +42,11 @@ public class UsuarioService {
         return page;
     }
 
-    public Usuario visualizarUsuario(UUID id) {
+    public Usuario visualizarUsuario(Long id) {
         return usuarioRepository.getReferenceById(id);
     }
 
-    public void deleteUsuario(UUID id) {
+    public void deleteUsuario(Long id) {
         var usuario = usuarioRepository.getReferenceById(id);
         try {
             usuarioRepository.delete(usuario);      

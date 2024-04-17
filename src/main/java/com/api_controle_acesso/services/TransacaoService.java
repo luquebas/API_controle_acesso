@@ -1,5 +1,4 @@
 package com.api_controle_acesso.services;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,12 +32,12 @@ public class TransacaoService {
         return page;
     }
 
-    public Transacao visualizarTransacao(UUID id) {
+    public Transacao visualizarTransacao(Long id) {
         
         return transacaoRepository.getReferenceById(id);
     }
 
-    public void excluirTransacao(UUID id) {
+    public void excluirTransacao(Long id) {
         var transacao = transacaoRepository.getReferenceById(id);
         try {
             transacaoRepository.delete(transacao);

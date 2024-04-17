@@ -1,5 +1,4 @@
 package com.api_controle_acesso.controllers;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,7 +46,7 @@ public class CursoController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<Object> visualizarCurso(@PathVariable UUID id) {
+    public ResponseEntity<Object> visualizarCurso(@PathVariable Long id) {
         
         var curso = cursoService.visualizarCurso(id);
         return ResponseEntity.ok().body(new CursoReturnGetDTO(curso));
@@ -66,7 +65,7 @@ public class CursoController {
     @DeleteMapping("/{id}")
     @Transactional
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<Object> deleteCurso(@PathVariable UUID id) {
+    public ResponseEntity<Object> deleteCurso(@PathVariable Long id) {
         cursoService.deleteCurso(id);
 
         return ResponseEntity.noContent().build();

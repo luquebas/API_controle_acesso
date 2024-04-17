@@ -1,5 +1,4 @@
 package com.api_controle_acesso.controllers;
-import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +50,7 @@ public class TransacaoController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<Object> visualizarTransacao(@PathVariable UUID id) {
+    public ResponseEntity<Object> visualizarTransacao(@PathVariable Long id) {
         
         var transacao = transacaoService.visualizarTransacao(id);
         return ResponseEntity.ok().body(new TransacaoReturnDTO(transacao));
@@ -60,7 +59,7 @@ public class TransacaoController {
     @DeleteMapping("/{id}")
     @Transactional
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<Object> deleteTransacao(@PathVariable UUID id) {
+    public ResponseEntity<Object> deleteTransacao(@PathVariable Long id) {
         
         transacaoService.excluirTransacao(id);
         return ResponseEntity.noContent().build();

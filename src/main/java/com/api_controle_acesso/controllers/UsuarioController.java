@@ -1,5 +1,4 @@
 package com.api_controle_acesso.controllers;
-import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +58,7 @@ public class UsuarioController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getUsuario(@PathVariable UUID id) {
+    public ResponseEntity<Object> getUsuario(@PathVariable Long id) {
         var usuario = usuarioService.visualizarUsuario(id);
         return ResponseEntity.ok(new UsuarioReturnDTO(usuario));
     }
@@ -83,7 +82,7 @@ public class UsuarioController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<Object> updateRole(@PathVariable UUID id) {
+    public ResponseEntity<Object> updateRole(@PathVariable Long id) {
 
         var usuario = usuarioService.visualizarUsuario(id);
         usuario.setRole(Role.ROLE_ADMIN);
@@ -94,7 +93,7 @@ public class UsuarioController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<Object> deleteUsuario(@PathVariable UUID id) {
+    public ResponseEntity<Object> deleteUsuario(@PathVariable Long id) {
        
         usuarioService.deleteUsuario(id);
         return ResponseEntity.noContent().build();

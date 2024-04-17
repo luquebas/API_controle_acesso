@@ -1,6 +1,5 @@
 package com.api_controle_acesso.models;
 import java.util.List;
-import java.util.UUID;
 import com.api_controle_acesso.DTOs.CursoDTO.CursoPostDTO;
 import com.api_controle_acesso.DTOs.CursoDTO.CursoPutDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -35,8 +34,8 @@ public class Curso {
         this.duracao = cursoPostDTO.duracao();
     }
 
-    @Id @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @Column(name = "nome")
     private String nome;

@@ -1,7 +1,5 @@
 package com.api_controle_acesso.models;
 import java.time.LocalDateTime;
-import java.util.UUID;
-
 import com.api_controle_acesso.DTOs.TransacaoDTO.TransacaoPostDTO;
 import com.api_controle_acesso.models.enums.DiaSemana;
 import com.api_controle_acesso.models.enums.TipoTransacao;
@@ -40,8 +38,8 @@ public class Transacao {
         this.diaSemana = transacaoPostDTO.diaSemana();
     }
 
-    @Id @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")

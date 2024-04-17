@@ -1,5 +1,4 @@
 package com.api_controle_acesso.services;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,11 +29,11 @@ public class CursoService {
         return page;
     }
 
-    public Curso visualizarCurso(UUID id) {
+    public Curso visualizarCurso(Long id) {
         return cursoRepository.getReferenceById(id);
     }
 
-    public void deleteCurso(UUID id) {
+    public void deleteCurso(Long id) {
         var curso = cursoRepository.getReferenceById(id);
         try {
             cursoRepository.delete(curso);

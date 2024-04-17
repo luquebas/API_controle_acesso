@@ -1,6 +1,4 @@
 package com.api_controle_acesso.controllers;
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -51,7 +49,7 @@ public class HorarioController {
     
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<Object> visualizarHorario(@PathVariable UUID id) {
+    public ResponseEntity<Object> visualizarHorario(@PathVariable Long id) {
         
         var horario = horarioService.visualizarHorario(id);
         return ResponseEntity.ok().body(new HorarioReturnDTO(horario));
@@ -70,7 +68,7 @@ public class HorarioController {
     @DeleteMapping("/{id}")
     @Transactional
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<Object> deleteHorario(@PathVariable UUID id) {
+    public ResponseEntity<Object> deleteHorario(@PathVariable Long id) {
         horarioService.deleteHorario(id);
 
         return ResponseEntity.noContent().build();

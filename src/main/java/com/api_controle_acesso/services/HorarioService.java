@@ -1,7 +1,4 @@
 package com.api_controle_acesso.services;
-
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,9 +14,15 @@ public class HorarioService {
     @Autowired
     private HorarioRepository horarioRepository;
 
+    @Autowired
+    private CursoService cursoService;
+
     public Horario criarHorario(HorarioPostDTO horarioPostDTO) {
 
         var horario = new Horario(horarioPostDTO);
+
+        var curso = cursoService.visualizarCurso(horarioPostDTO.curso().getId());
+        horario.setCurso(curso);
 
         return horarioRepository.save(horario);
     }
@@ -29,11 +32,11 @@ public class HorarioService {
         return page;
     }
 
-    public Horario visualizarHorario(UUID id) {
+    public Horario visualizarHorario(Long id) {
         return horarioRepository.getReferenceById(id);
     }
 
-    public void deleteHorario(UUID id) {
+    public void deleteHorario(Long id) {
         var horario = horarioRepository.getReferenceById(id);
         try {
             horarioRepository.delete(horario);
