@@ -1,12 +1,23 @@
 package com.api_controle_acesso.controllers;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +26,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPostDTO;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPutDTO;
@@ -37,6 +50,8 @@ public class UsuarioController {
     private CursoService cursoService;
 
     Logger logger = LoggerFactory.getLogger(UsuarioController.class);
+
+    private static final String UPLOAD_DIRECTORY = "src/main/resources/images/";
     
     @PostMapping
     @Transactional
@@ -56,11 +71,61 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.visualizarUsuarios(pageable));
     }
 
+    @GetMapping("/imagem/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<Object> getUsuarioImage(@PathVariable Long id) {
+        var usuario = usuarioService.visualizarUsuario(id);
+
+        Path path = Paths.get(usuario.getFoto().toString());
+        logger.info(usuario.getFoto().toString());
+
+        try {
+            Resource resource = new UrlResource(path.toUri());
+
+            if (resource.exists() && resource.isReadable()) {
+                MediaType mediaType = MediaType.IMAGE_JPEG;
+
+                return ResponseEntity.ok().contentType(mediaType).body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (MalformedURLException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); 
+        }
+    }
+
+
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<Object> getUsuario(@PathVariable Long id) {
         var usuario = usuarioService.visualizarUsuario(id);
         return ResponseEntity.ok(new UsuarioReturnDTO(usuario));
+    }
+
+    @PutMapping("/upload/{id}")
+    @Transactional
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<Object> uploadUsuarioImage(@PathVariable Long id, @RequestParam("foto") MultipartFile image) {
+        var usuario = usuarioService.visualizarUsuario(id);
+
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (image != null && !image.isEmpty()) {
+            try {
+                byte[] bytes = image.getBytes();
+                File uploadedFile = new File(UPLOAD_DIRECTORY + image.getOriginalFilename());
+                try (FileOutputStream fos = new FileOutputStream(uploadedFile)) {
+                    fos.write(bytes);
+                }
+                usuario.setFoto(uploadedFile.getAbsolutePath());
+            } catch (IOException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao fazer upload do arquivo: " + e.getMessage());
+            }
+        }
+
+        return ResponseEntity.ok().body(new UsuarioReturnDTO(usuario));
     }
 
     @PutMapping
@@ -98,6 +163,4 @@ public class UsuarioController {
         usuarioService.deleteUsuario(id);
         return ResponseEntity.noContent().build();
     }
-
-
 }
