@@ -1,11 +1,6 @@
 package com.api_controle_acesso.controllers;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
+import java.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,8 +43,6 @@ public class UsuarioController {
     private CursoService cursoService;
 
     Logger logger = LoggerFactory.getLogger(UsuarioController.class);
-
-    private static final String UPLOAD_DIRECTORY = "src/main/resources/images/";
     
     @PostMapping
     @Transactional
@@ -75,21 +66,19 @@ public class UsuarioController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<Object> getUsuarioImage(@PathVariable Long id) {
         var usuario = usuarioService.visualizarUsuario(id);
-
-        Path path = Paths.get(usuario.getFoto().toString());
-        logger.info(usuario.getFoto().toString());
+        var image = usuario.getFoto();
 
         try {
-            Resource resource = new UrlResource(path.toUri());
+            var decodedImage = Base64.getDecoder().decode(image);
 
-            if (resource.exists() && resource.isReadable()) {
+            if (decodedImage != null) {
                 MediaType mediaType = MediaType.IMAGE_JPEG;
 
-                return ResponseEntity.ok().contentType(mediaType).body(resource);
+                return ResponseEntity.ok().contentType(mediaType).body(decodedImage);
             } else {
                 return ResponseEntity.notFound().build();
             }
-        } catch (MalformedURLException e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); 
         }
     }
@@ -114,12 +103,8 @@ public class UsuarioController {
 
         if (image != null && !image.isEmpty()) {
             try {
-                byte[] bytes = image.getBytes();
-                File uploadedFile = new File(UPLOAD_DIRECTORY + image.getOriginalFilename());
-                try (FileOutputStream fos = new FileOutputStream(uploadedFile)) {
-                    fos.write(bytes);
-                }
-                usuario.setFoto(uploadedFile.getAbsolutePath());
+                byte[] byteImage = image.getBytes();
+                usuario.setFoto(Base64.getEncoder().encodeToString(byteImage));
             } catch (IOException e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao fazer upload do arquivo: " + e.getMessage());
             }

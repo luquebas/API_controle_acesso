@@ -27,7 +27,7 @@ public class SecurityConfig {
         return httpSecurity.csrf(c -> c.disable())
         .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(req -> {
-            req.requestMatchers(HttpMethod.POST,"/login").permitAll();
+            req.requestMatchers(HttpMethod.POST,"/login", "/requestcode", "/verifycode").permitAll();
             req.requestMatchers(HttpMethod.POST, "/usuario").hasRole("ADMIN");
             req.requestMatchers(HttpMethod.GET, "/usuario").hasRole("ADMIN");
             req.requestMatchers(HttpMethod.GET, "/usuario/**").hasAnyRole("ADMIN", "USER");

@@ -14,5 +14,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
             """)
     Optional<Boolean> verificarCpfExistente(String cpf);
 
-    Usuario findByMatricula(String matricula);
+    Usuario findByEmail(String email);
 }

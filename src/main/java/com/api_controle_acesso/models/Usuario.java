@@ -24,6 +24,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -48,7 +49,6 @@ public class Usuario implements UserDetails {
         this.cpf = dadosUsuario.cpf();
         this.email = dadosUsuario.email();
         this.senha = dadosUsuario.senha();
-        this.foto = dadosUsuario.foto();
         this.nivel = dadosUsuario.nivel();
     }
 
@@ -78,7 +78,8 @@ public class Usuario implements UserDetails {
     @Column(name = "senha")
     private String senha;
 
-    @Column(name = "foto")
+    @Size(max = 100000)
+    @Column(name = "foto", columnDefinition = "LONGTEXT")
     private String foto;
 
     @Column(name = "nivel")
@@ -128,9 +129,6 @@ public class Usuario implements UserDetails {
     public void update(@Valid UsuarioPutDTO usuarioPutDTO) {
         if (usuarioPutDTO.email() != null)
             this.email = usuarioPutDTO.email();
-        
-        if (usuarioPutDTO.foto() != null)
-            this.foto = usuarioPutDTO.foto();
     
     }
 }

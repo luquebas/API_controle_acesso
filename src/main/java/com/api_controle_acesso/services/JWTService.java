@@ -11,10 +11,10 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 @Service
-public class 
-JWTService {
+public class JWTService {
 
     Logger logger = LoggerFactory.getLogger(JWTService.class);
     
@@ -26,7 +26,7 @@ JWTService {
             var algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
                 .withIssuer("API Controle Acesso")
-                .withSubject(usuario.getMatricula())
+                .withSubject(usuario.getEmail())
                 .withExpiresAt(dataExpiracao())
                 .sign(algorithm);
         } catch (JWTCreationException e) {
@@ -62,6 +62,20 @@ JWTService {
             
         } catch (JWTVerificationException e) {
             throw new JWTVerificationException("Token Inválido ou Expirado, faça Login Novamente!");
+        }
+    }
+
+    public String getSubject(String jwtToken) {
+        String token = jwtToken.replace("Bearer ", "");
+        try {
+            DecodedJWT decodedJWT = JWT.decode(token);
+            String subject = decodedJWT.getSubject();
+
+            return subject;
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            return null;
         }
     }
 

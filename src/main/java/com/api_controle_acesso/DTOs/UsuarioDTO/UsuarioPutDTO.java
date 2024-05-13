@@ -1,6 +1,6 @@
 package com.api_controle_acesso.DTOs.UsuarioDTO;
 import jakarta.validation.constraints.NotNull;
 
-public record UsuarioPutDTO(@NotNull Long id, String email, String foto, Long curso_id) {
+public record UsuarioPutDTO(@NotNull Long id, String email, Long curso_id) {
     
 }

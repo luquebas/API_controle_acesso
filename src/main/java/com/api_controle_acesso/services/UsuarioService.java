@@ -55,8 +55,8 @@ public class UsuarioService {
         }
     }
 
-    public Usuario findUsuarioByMatricula(String matricula) {
-        var usuario = usuarioRepository.findByMatricula(matricula);
+    public Usuario findUsuarioByEmail(String email) {
+        var usuario = usuarioRepository.findByEmail(email);
         return usuario;
     }
 }

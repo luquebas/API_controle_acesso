@@ -8,6 +8,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 
-public record UsuarioPostDTO(@NotBlank String nome, @Past LocalDate dataNascimento, @NotBlank String matricula, @NotNull Curso curso, @Pattern(regexp = "\\d{3}\\.?\\d{3}\\.?\\d{3}\\-?\\d{2}") @NotBlank String cpf, @NotBlank String email ,@NotBlank String senha, String foto, @NotBlank String nivel) {
+public record UsuarioPostDTO(@NotBlank String nome, @Past LocalDate dataNascimento, @NotBlank String matricula, @NotNull Curso curso, @Pattern(regexp = "\\d{3}\\.?\\d{3}\\.?\\d{3}\\-?\\d{2}") @NotBlank String cpf, @NotBlank String email ,@NotBlank String senha, @NotBlank String nivel) {
 
 }
