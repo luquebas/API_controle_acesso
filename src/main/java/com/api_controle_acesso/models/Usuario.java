@@ -129,6 +129,20 @@ public class Usuario implements UserDetails {
     public void update(@Valid UsuarioPutDTO usuarioPutDTO) {
         if (usuarioPutDTO.email() != null)
             this.email = usuarioPutDTO.email();
-    
+        
+        if (usuarioPutDTO.nome() != null)
+            this.nome = usuarioPutDTO.email();
+        
+        if (usuarioPutDTO.dataNascimento() !=  null)
+            this.dataNascimento = usuarioPutDTO.dataNascimento();
+
+        if (usuarioPutDTO.matricula() != null)
+            this.matricula = usuarioPutDTO.matricula();
+        
+        if (usuarioPutDTO.cpf() != null)
+            this.cpf = usuarioPutDTO.cpf();
+
+        if (usuarioPutDTO.nivel() != null)
+            this.nivel = usuarioPutDTO.nivel();
     }
 }

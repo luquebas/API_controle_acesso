@@ -6,22 +6,11 @@ import java.util.Base64;
 import java.util.UUID;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PasswordResetTokenService {
-
-    @Autowired
-    private UsuarioService usuarioService;
-
-    @Autowired
-    private JWTService jwtService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Value("${api.security.token.secret}")
     private String secret;
@@ -56,23 +45,6 @@ public class PasswordResetTokenService {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public boolean isValidResetToken(String email, String token) {
-        try {
-            String signedToken = signToken(token);
-            return signedToken.equals(token);
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public void resetPassword(String email, String token, String newPassword) {
-        if (isValidResetToken(email, token)) {
-            var usuario = usuarioService.findUsuarioByEmail(jwtService.getSubject(token));
-            usuario.setSenha(passwordEncoder.encode(newPassword));
-        } 
     }
 
     private String signToken(String token) throws NoSuchAlgorithmException, InvalidKeyException {

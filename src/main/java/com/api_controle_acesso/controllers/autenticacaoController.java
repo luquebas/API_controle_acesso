@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import com.api_controle_acesso.DTOs.AuthDTO.LoginDTO;
 import com.api_controle_acesso.DTOs.AuthDTO.RequestCodeDTO;
+import com.api_controle_acesso.DTOs.AuthDTO.ResetPasswordDTO;
 import com.api_controle_acesso.DTOs.AuthDTO.TokenDTO;
 import com.api_controle_acesso.DTOs.AuthDTO.VerifyCodeDTO;
 import com.api_controle_acesso.models.Usuario;
@@ -58,7 +59,7 @@ public class autenticacaoController {
 
         var jwtToken = jwtService.gerarToken((Usuario) authentication.getPrincipal());
 
-        return ResponseEntity.ok(new TokenDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), jwtToken));
+        return ResponseEntity.ok(new TokenDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), jwtToken, usuario.getRole()));
     }
 
     @GetMapping("/validarToken")
@@ -71,11 +72,13 @@ public class autenticacaoController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @PostMapping("/resetpassword")
-    public ResponseEntity<String> resetarSenha(@RequestHeader(name = "Authorization", defaultValue = "") String token, @RequestBody String newPassword) {
+    public ResponseEntity<String> resetarSenha(@RequestHeader(name = "Authorization", defaultValue = "") String token, @RequestBody ResetPasswordDTO newPassword) {
         boolean isValidToken = jwtService.tokenValido(token);
         if (isValidToken) {
             var usuario = usuarioService.findUsuarioByEmail(jwtService.getSubject(token));
-            usuario.setSenha(passwordEncoder.encode(newPassword));
+            usuario.setSenha(passwordEncoder.encode(newPassword.senha()));
+            
+            usuarioService.updateUsuario(usuario);
 
             return ResponseEntity.noContent().build();
         } else {
@@ -114,7 +117,7 @@ public class autenticacaoController {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return ResponseEntity.ok(new TokenDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), jwtToken));
+        return ResponseEntity.ok(new TokenDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), jwtToken, usuario.getRole()));
 
     }
 }

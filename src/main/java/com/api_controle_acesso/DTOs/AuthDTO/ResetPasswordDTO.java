@@ -1,6 +1,7 @@
 package com.api_controle_acesso.DTOs.AuthDTO;
 
+import jakarta.validation.constraints.NotBlank;
 
-public record ResetPasswordDTO(String email,  String token, String newPassword) {
+public record ResetPasswordDTO(@NotBlank String senha) {
     
 }

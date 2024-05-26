@@ -1,5 +1,7 @@
 package com.api_controle_acesso.controllers;
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPostDTO;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioPutDTO;
 import com.api_controle_acesso.DTOs.UsuarioDTO.UsuarioReturnDTO;
+import com.api_controle_acesso.models.Horario;
+import com.api_controle_acesso.models.enums.DiaSemana;
 import com.api_controle_acesso.models.enums.Role;
 import com.api_controle_acesso.services.CursoService;
 import com.api_controle_acesso.services.UsuarioService;
@@ -147,5 +151,21 @@ public class UsuarioController {
        
         usuarioService.deleteUsuario(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @GetMapping("/qrcode/{id}")
+    public ResponseEntity<Object> getValidadeQrCode(@PathVariable Long id) {
+        var usuario = usuarioService.visualizarUsuario(id);
+
+        DayOfWeek today = LocalDate.now().getDayOfWeek();
+
+        DiaSemana hoje = usuarioService.comparaDiaSemana(today);
+
+        boolean isTodayHorario = usuario.getCurso().getHorarios().stream()
+        .map(Horario::getDiaSemana)  
+        .anyMatch(diaSemana -> diaSemana.equals(hoje));
+
+        return ResponseEntity.ok("{\"validade_hoje\":\"" + isTodayHorario + "\"}");
     }
 }

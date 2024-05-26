@@ -58,7 +58,7 @@ public class Horario {
     @JsonBackReference
     private Curso curso;
 
-        public void update(@Valid HorarioPutDTO horarioPutDTO) {
+    public void update(@Valid HorarioPutDTO horarioPutDTO) {
         if (horarioPutDTO.diaSemana() != null)
             this.diaSemana = horarioPutDTO.diaSemana();
         
