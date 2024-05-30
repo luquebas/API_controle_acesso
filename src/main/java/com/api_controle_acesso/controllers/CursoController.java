@@ -35,7 +35,7 @@ public class CursoController {
         var curso = cursoService.criarCurso(cursoPostDTO);
         var uri = uriComponentsBuilder.path("curso/{id}").buildAndExpand(curso.getId()).toUri();
 
-        return ResponseEntity.created(uri).body(new CursoReturnGetDTO(curso));
+        return ResponseEntity.created(uri).body(new CursoReturnGetDTO(curso, true));
     }
 
     @GetMapping
