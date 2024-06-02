@@ -131,7 +131,7 @@ public class Usuario implements UserDetails {
             this.email = usuarioPutDTO.email();
         
         if (usuarioPutDTO.nome() != null)
-            this.nome = usuarioPutDTO.email();
+            this.nome = usuarioPutDTO.nome();
         
         if (usuarioPutDTO.dataNascimento() !=  null)
             this.dataNascimento = usuarioPutDTO.dataNascimento();
